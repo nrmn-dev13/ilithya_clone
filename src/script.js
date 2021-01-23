@@ -21,39 +21,10 @@ scene.background = new THREE.Color( 0xff69b4 );
  */
 const textureLoader = new THREE.TextureLoader()
 const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
-
-/**
- * Fonts
- */
-const fontLoader = new THREE.FontLoader()
-
 const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
 
-fontLoader.load(
-  '/fonts/helvetiker_regular.typeface.json',
-  (font) => {
-    const textGeometry = new THREE.TextBufferGeometry(
-      'Hello Three.js',
-      {
-        font: font,
-        size: 0.5,
-        height: 0.2,
-        curveSegments: 5,
-        bevelEnabled: true,
-        bevelThickness: 0.03,
-        bevelSize: 0.02,
-        bevelOffset: 0,
-        bevelSegments: 4
-      }
-    )
-    textGeometry.center()
-    const text = new THREE.Mesh(textGeometry, material)
-    scene.add(text)
-  }
-)
-
 const donutGeometry = new THREE.TorusBufferGeometry(0.3, 0.2, 20, 45)
-const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
+const boxGeometry = new THREE.BoxBufferGeometry(0.5, 0.5, 0.5)
 
 
 for (let i = 0; i < 50; i++) {
@@ -84,6 +55,35 @@ for (let i = 0; i < 50; i++) {
 
   scene.add(box)
 }
+
+
+/**
+ * Fonts
+ */
+const fontLoader = new THREE.FontLoader()
+fontLoader.load(
+  '/fonts/helvetiker_regular.typeface.json',
+  (font) => {
+    const textGeometry = new THREE.TextBufferGeometry(
+      'Hello Three.js',
+      {
+        font: font,
+        size: 0.5,
+        height: 0.2,
+        curveSegments: 5,
+        bevelEnabled: true,
+        bevelThickness: 0.03,
+        bevelSize: 0.02,
+        bevelOffset: 0,
+        bevelSegments: 4
+      }
+    )
+    textGeometry.center()
+    const text = new THREE.Mesh(textGeometry, material)
+    text.rotation.z = 0.5 * 2;
+    scene.add(text)
+  }
+)
 
 /**
  * Sizes
