@@ -1,26 +1,22 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
 
 /**
  * Base
  */
-// Debug
-const gui = new dat.GUI()
-
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
-scene.background = new THREE.Color( 0xff69b4 );
+scene.background = new THREE.Color(0xff69b4);
 
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
-const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
+const matcapTexture = textureLoader.load('/textures/matcaps/9.png')
 const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
 
 const donutGeometry = new THREE.TorusBufferGeometry(0.3, 0.2, 20, 45)
@@ -80,8 +76,25 @@ fontLoader.load(
     )
     textGeometry.center()
     const text = new THREE.Mesh(textGeometry, material)
-    text.rotation.z = 0.5 * 2;
+    // text.rotation.z = 0.5 * 2;
     scene.add(text)
+
+    const clock = new THREE.Clock()
+
+    const textRotation = () => {
+
+      const elapsedTime = clock.getElapsedTime()
+      
+      text.rotation.x = Math.cos(elapsedTime)
+      text.rotation.z = Math.sin(elapsedTime)
+
+    // Render
+      renderer.render(scene, camera)
+
+      window.requestAnimationFrame(textRotation)
+    }
+
+    textRotation()
   }
 )
 
@@ -114,7 +127,7 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
-camera.position.z = 5
+camera.position.z = 7
 scene.add(camera)
 
 // Controls
