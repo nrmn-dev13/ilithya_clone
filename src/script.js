@@ -14,6 +14,7 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+scene.background = new THREE.Color( 0xff69b4 );
 
 /**
  * Textures
@@ -136,6 +137,9 @@ const clock = new THREE.Clock()
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
+
+  camera.position.y = Math.sin(elapsedTime)
+  camera.position.x = Math.cos(elapsedTime)
 
   // Update controls
   controls.update()
