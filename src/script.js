@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import gsap from 'gsap'
 
 /**
  * Base
@@ -23,7 +24,7 @@ const donutGeometry = new THREE.TorusBufferGeometry(0.20, 0.10, 16, 100)
 const boxGeometry = new THREE.BoxBufferGeometry(0.25, 0.25, 0.25)
 
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 150; i++) {
   const donut = new THREE.Mesh(donutGeometry, material)
   donut.position.x = (Math.random() - 0.5) * 10
   donut.position.y = (Math.random() - 0.5) * 10
@@ -37,7 +38,7 @@ for (let i = 0; i < 100; i++) {
 
   scene.add(donut)
 }
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 150; i++) {
   const box = new THREE.Mesh(boxGeometry, material)
   box.position.x = (Math.random() - 0.5) * 10
   box.position.y = (Math.random() - 0.5) * 10
@@ -84,12 +85,9 @@ fontLoader.load(
     const textRotation = () => {
 
       const elapsedTime = clock.getElapsedTime()
-      
-      text.rotation.x = Math.cos(elapsedTime * 0.3)
-      text.rotation.z = Math.sin(elapsedTime * 0.3)
 
-    // Render
-      renderer.render(scene, camera)
+      // text.rotation.x = Math.cos(elapsedTime * 0.3)
+      // text.rotation.z = Math.sin(elapsedTime * 0.3)
 
       window.requestAnimationFrame(textRotation)
     }
@@ -127,12 +125,15 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
-camera.position.z = 7
+camera.position.z = 3
 scene.add(camera)
 
 // Controls
 const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+controls.enableZoom = false;
+controls.enableRotate = false;
+controls.enabled = false
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -143,17 +144,29 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+
 /**
  * Animate
  */
 const clock = new THREE.Clock()
+const cursor = {
+  x: Math.random(),
+  y: Math.random()
+}
+
+window.addEventListener('mousemove', (event) => {
+  cursor.x = event.clientX / sizes.width - 0.5
+  cursor.y = -(event.clientY / sizes.height - 0.5)
+})
+
+gsap.from(camera.position, { duration: 1, delay: 0, z: 20 })
+gsap.to(camera.position, { duration: 1, delay: 0.5, z: 3 })
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime()
-
-  camera.position.y = Math.sin(elapsedTime)
-  camera.position.x = Math.cos(elapsedTime)
-
+  
+  camera.position.x = Math.sin((cursor.x / Math.PI) * elapsedTime * 1) * 5.5;
+  camera.position.y = Math.sin((cursor.y / Math.PI) * elapsedTime * 1) * 5.5;
   // Update controls
   controls.update()
 
@@ -165,3 +178,4 @@ const tick = () => {
 }
 
 tick()
+
