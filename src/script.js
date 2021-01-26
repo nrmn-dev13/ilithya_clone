@@ -19,11 +19,11 @@ const textureLoader = new THREE.TextureLoader()
 const matcapTexture = textureLoader.load('/textures/matcaps/9.png')
 const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
 
-const donutGeometry = new THREE.TorusBufferGeometry(0.3, 0.2, 20, 45)
-const boxGeometry = new THREE.BoxBufferGeometry(0.5, 0.5, 0.5)
+const donutGeometry = new THREE.TorusBufferGeometry(0.20, 0.10, 16, 100)
+const boxGeometry = new THREE.BoxBufferGeometry(0.25, 0.25, 0.25)
 
 
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 100; i++) {
   const donut = new THREE.Mesh(donutGeometry, material)
   donut.position.x = (Math.random() - 0.5) * 10
   donut.position.y = (Math.random() - 0.5) * 10
@@ -37,7 +37,7 @@ for (let i = 0; i < 50; i++) {
 
   scene.add(donut)
 }
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 100; i++) {
   const box = new THREE.Mesh(boxGeometry, material)
   box.position.x = (Math.random() - 0.5) * 10
   box.position.y = (Math.random() - 0.5) * 10
@@ -85,8 +85,8 @@ fontLoader.load(
 
       const elapsedTime = clock.getElapsedTime()
       
-      text.rotation.x = Math.cos(elapsedTime)
-      text.rotation.z = Math.sin(elapsedTime)
+      text.rotation.x = Math.cos(elapsedTime * 0.3)
+      text.rotation.z = Math.sin(elapsedTime * 0.3)
 
     // Render
       renderer.render(scene, camera)
